@@ -1,0 +1,22 @@
+{
+  "name": "nodejs24",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "cross-env node ./main.js",
+    "start:debug": "node --inspect-brk ./main.js",
+    "watch": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info nodemon ./main.js"
+  },
+  "author": "PA",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.3"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "config": "^3.3.10",
+    "dotenv": "^16.4.1"
+  }
+}
