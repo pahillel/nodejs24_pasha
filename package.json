@@ -6,13 +6,16 @@
   "scripts": {
     "start": "cross-env node ./main.js",
     "start:debug": "node --inspect-brk ./main.js",
-    "watch": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info nodemon ./main.js"
+    "watch": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info nodemon ./main.js",
+    "start:copy": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info node ./main.js",
+    "format:fix": "prettier --write ."
   },
   "author": "PA",
   "license": "ISC",
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "prettier": "^3.2.4"
   },
   "dependencies": {
     "colors": "^1.4.0",
