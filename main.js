@@ -1,6 +1,4 @@
 require('dotenv').config();
-const logger = require('./utils/logger')('main');
+const { start } = require('./file_sync');
 
-logger.info('default message');
-logger.warn('warn message');
-logger.error('error message');
+start();
