@@ -8,7 +8,11 @@ const LOGS_PATH = path.join(__dirname, '..', 'logs');
 const INFO_LOG_PATH = path.join(LOGS_PATH, 'info.log');
 const ERROR_LOG_PATH = path.join(LOGS_PATH, 'errors.log');
 
-const LOG_PRIORITY = ['info', 'warn', 'error'];
+const LOG_PRIORITY_MAP = {
+  info: 0,
+  warn: 1,
+  error: 2
+};
 
 if (!fs.existsSync(LOGS_PATH)) {
   fs.mkdirSync(LOGS_PATH);
@@ -44,15 +48,15 @@ const _getLogFileMessage = (name, ...payload) => {
 };
 
 function makeLogger(name) {
-
   const _logHandlerFactory = (logFnName, colorFn) => {
-    const shouldLogToConsole = LOG_PRIORITY.indexOf(logFnName) >= LOG_PRIORITY.indexOf(logLevel);
+    const shouldLogToConsole =
+      LOG_PRIORITY_MAP[logFnName] >= LOG_PRIORITY_MAP[logLevel];
 
     return (...payload) => {
-      const logFileMessage = _getLogFileMessage(`${name}:`, ...payload);
+      const logFileMessage = _getLogFileMessage(name, ...payload);
 
       if (shouldLogToConsole) {
-        console[logFnName](colorFn(name), ...payload);
+        console[logFnName](colorFn(`${name}:`), ...payload);
       }
 
       streams[logFnName].write(logFileMessage);
