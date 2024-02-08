@@ -1,4 +1,5 @@
-const fs = require('fs/promises');
+const fsAsync = require('fs/promises');
+const fs = require('fs');
 
 const createDirectory = async (target, isExists = false) => {
   try {
@@ -6,7 +7,7 @@ const createDirectory = async (target, isExists = false) => {
       return;
     }
 
-    await fs.mkdir(target);
+    await fsAsync.mkdir(target);
   } catch (error) {
     throw new Error(`Directory ${target} create error: ${error}`);
   }
@@ -14,7 +15,7 @@ const createDirectory = async (target, isExists = false) => {
 
 const checkExists = async (path) => {
   try {
-    await fs.access(path);
+    await fsAsync.access(path);
 
     return true;
   } catch (error) {
@@ -22,7 +23,14 @@ const checkExists = async (path) => {
   }
 };
 
+const createDirectorySync = (path) => {
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path);
+  }
+};
+
 module.exports = {
   createDirectory,
-  checkExists
+  checkExists,
+  createDirectorySync
 };

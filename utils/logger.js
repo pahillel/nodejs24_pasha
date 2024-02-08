@@ -1,5 +1,7 @@
 const colors = require('colors');
 const config = require('config');
+const { infoLogStream, errorLogStream } = require('../helpers/write-stream');
+const { getLogMessage } = require('../helpers/logs-message');
 
 const logLevel = config.get('LOG_LEVEL');
 
@@ -17,12 +19,15 @@ function logger(name) {
   return {
     info: (...payload) => {
       info(colors.green(name), ...payload);
+      infoLogStream.write(getLogMessage(...payload));
     },
     warn: (...payload) => {
       warn(colors.yellow(name), ...payload);
+      errorLogStream.write(getLogMessage(...payload));
     },
     error: (...payload) => {
       console.error(colors.red(name), ...payload);
+      errorLogStream.write(getLogMessage(...payload));
     }
   };
 }
