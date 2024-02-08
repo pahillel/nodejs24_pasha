@@ -1,16 +1,7 @@
 const fs = require('fs/promises');
 const path = require('path');
 const logger = require('../utils/logger')('file_sync');
-
-const checkExists = async (filePath) => {
-  try {
-    await fs.access(filePath);
-
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
+const { checkExists, createDirectory } = require('../helpers/create-directory');
 
 const copyDirectory = async (source, target) => {
   try {
@@ -34,18 +25,6 @@ const copyDirectory = async (source, target) => {
     }
   } catch (error) {
     logger.error(`Directory ${source} copy error`, error.message);
-  }
-};
-
-const createDirectory = async (target, isExists = false) => {
-  try {
-    if (isExists) {
-      return;
-    }
-
-    await fs.mkdir(target);
-  } catch (error) {
-    logger.error(`Directory ${target} create error:`, error);
   }
 };
 
