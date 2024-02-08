@@ -8,6 +8,8 @@ const LOGS_PATH = path.join(__dirname, '..', 'logs');
 const INFO_LOG_PATH = path.join(LOGS_PATH, 'info.log');
 const ERROR_LOG_PATH = path.join(LOGS_PATH, 'errors.log');
 
+const LOG_PRIORITY = ['info', 'warn', 'error'];
+
 if (!fs.existsSync(LOGS_PATH)) {
   fs.mkdirSync(LOGS_PATH);
 }
@@ -29,30 +31,38 @@ const _createWriteStream = (filePath) => {
 const infoLogStream = _createWriteStream(INFO_LOG_PATH);
 const errorLogStream = _createWriteStream(ERROR_LOG_PATH);
 
-const _getLogMessage = (name, ...payload) => {
+const streams = {
+  info: infoLogStream,
+  warn: errorLogStream,
+  error: errorLogStream
+};
+
+const _getLogFileMessage = (name, ...payload) => {
   const time = new Date().toISOString();
 
   return `[${time}][${name}]: ${payload.join(' ')}\n`;
 };
 
-const _logHandlerFactory = (logFn, colorFn, stream, name) => {
-  return (...payload) => {
-    const message = _getLogMessage(`${name}:`, ...payload);
+function makeLogger(name) {
 
-    logFn(colorFn(name), ...payload);
-    stream.write(message);
+  const _logHandlerFactory = (logFnName, colorFn) => {
+    const shouldLogToConsole = LOG_PRIORITY.indexOf(logFnName) >= LOG_PRIORITY.indexOf(logLevel);
+
+    return (...payload) => {
+      const logFileMessage = _getLogFileMessage(`${name}:`, ...payload);
+
+      if (shouldLogToConsole) {
+        console[logFnName](colorFn(name), ...payload);
+      }
+
+      streams[logFnName].write(logFileMessage);
+    };
   };
-};
-
-function logger(name) {
-  const noop = () => {};
-  const info = logLevel === 'info' ? console.log : noop;
-  const warn = ['info', 'warn'].includes(logLevel) ? console.warn : noop;
 
   return {
-    info: _logHandlerFactory(info, colors.green, infoLogStream, name),
-    warn: _logHandlerFactory(warn, colors.yellow, errorLogStream, name),
-    error: _logHandlerFactory(console.error, colors.red, errorLogStream, name)
+    info: _logHandlerFactory('info', colors.green),
+    warn: _logHandlerFactory('warn', colors.yellow),
+    error: _logHandlerFactory('error', colors.red)
   };
 }
 
@@ -61,4 +71,4 @@ process.on('beforeExit', () => {
   errorLogStream.end();
 });
 
-module.exports = logger;
+module.exports = makeLogger;
