@@ -35,7 +35,7 @@ const _getLogMessage = (name, ...payload) => {
   return `[${time}][${name}]: ${payload.join(' ')}\n`;
 };
 
-const _logHandler = (logFn, colorFn, stream, name) => {
+const _logHandlerFactory = (logFn, colorFn, stream, name) => {
   return (...payload) => {
     const message = _getLogMessage(`${name}:`, ...payload);
 
@@ -50,9 +50,9 @@ function logger(name) {
   const warn = ['info', 'warn'].includes(logLevel) ? console.warn : noop;
 
   return {
-    info: _logHandler(info, colors.green, infoLogStream, name),
-    warn: _logHandler(warn, colors.yellow, errorLogStream, name),
-    error: _logHandler(console.error, colors.red, errorLogStream, name)
+    info: _logHandlerFactory(info, colors.green, infoLogStream, name),
+    warn: _logHandlerFactory(warn, colors.yellow, errorLogStream, name),
+    error: _logHandlerFactory(console.error, colors.red, errorLogStream, name)
   };
 }
 
