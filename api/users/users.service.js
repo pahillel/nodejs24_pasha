@@ -21,8 +21,6 @@ class UsersService {
   async createEmptyDBFile() {
     try {
       await fs.writeFile(this.dbPath, '[]');
-
-      console.log('Create new db file:', this.dbPath);
     } catch (error) {
       console.error('Create DB error:', error);
     }
@@ -32,7 +30,6 @@ class UsersService {
     try {
       const data = await fs.readFile(this.dbPath, 'utf-8');
       this.users = JSON.parse(data);
-      console.log('Loaded users from DB:', this.users);
     } catch (error) {
       console.error('Error while loading users from DB:', error);
     }
