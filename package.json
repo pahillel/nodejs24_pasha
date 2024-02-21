@@ -8,6 +8,7 @@
     "start:debug": "node --inspect-brk ./main.js",
     "start:server": "node ./server.js",
     "watch:server": "cross-env LOG_LEVEL=info nodemon ./server.js",
+    "watch:server:express": "cross-env nodemon ./server-express.js",
     "watch": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info nodemon ./main.js",
     "start:copy": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info node ./main.js",
     "format:fix": "prettier --write ."
