@@ -5,9 +5,8 @@ const getUsers = async (req, res, next) => {
   try {
     const users = await usersService.getAllUsers();
 
-    if (!users) {
-      throw setError('Users not found', statusCodes.INTERNAL_SERVER_ERROR);
-    }
+    // по факту, це не помилка - якщо юзерів ще немає, повернемо пустий масив.
+    // 404 було б якщо ендпоінта немає, наприклад. Але точно не сервер еррор
 
     req._apiResponse = { status: statusCodes.OK, data: users };
     next();

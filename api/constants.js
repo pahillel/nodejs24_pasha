@@ -10,6 +10,7 @@ const statusCodes = {
 const setError = (message = '', statusCode) => {
   const error = new Error(message);
   error.status = statusCode;
+  error.type = 'UserApi'
 
   return error;
 };

@@ -27,7 +27,7 @@ const validate = (
 };
 
 const respond = (req, res) => {
-  const { status = statusCodes.INTERNAL_SERVER_ERROR, data = 'no responce from API, try again later' } = req._apiResponse;
+  const { status = statusCodes.INTERNAL_SERVER_ERROR, data = 'no responce from API, try again later' } = req._apiResponse || {};
   console.log('api responce', status, data);
 
   res.status(status).send(data);

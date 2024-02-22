@@ -32,4 +32,15 @@ router.post('/', validate(createUserValidation), createUser, respond);
  */
 router.delete('/:user_id', validate(userByIdValidation), deleteUser, respond);
 
+router.use((err, req, res, next) => {
+  // API errors краще повертати так само джсоном або текстом - просто якщо ендпоінт повертає або HTML або JSON,
+  // це буде сильно конф'юзити. Бо якщо звертаємось сюда з іншого бекенда - нащо нам той HTML? парсити на еррор код? ))
+  // Тому будемо повертати так само як із валідейшен мідлвера - щоб було загальне консістенсі :thumbs_up
+  if (err.type === 'UserApi') {
+    req._apiResponse = { status: err.status, data: { error: err.message } };
+  }
+
+  return next();
+}, respond)
+
 module.exports = router;
