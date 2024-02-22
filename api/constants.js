@@ -10,12 +10,18 @@ const statusCodes = {
 const setError = (message = '', statusCode) => {
   const error = new Error(message);
   error.status = statusCode;
-  error.type = 'UserApi'
+  error.type = 'API_ERROR';
 
   return error;
 };
 
+const response = (req, next, dto) => {
+  req._apiResponse = { ...dto };
+  return next();
+};
+
 module.exports = {
   statusCodes,
-  setError
+  setError,
+  response
 };
