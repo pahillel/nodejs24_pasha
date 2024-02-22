@@ -66,30 +66,19 @@ class UsersService {
   }
 
   async deleteUserById(user_id) {
-    // Страшно бо фільтр все одно відпрацює навіть якщо не було такого елемента, а на довжину массива завʼязуватись не хочеться
-    const { users, deleted } = this.users.reduce(
-      (acc, user) => {
-        if (user.id === user_id) {
-          acc.deleted = true;
-        } else {
-          acc.users.push(user);
-        }
-
-        return acc;
-      },
-      {
-        users: [],
-        deleted: false
-      }
-    );
-
-    if (!deleted) {
+    /*
+     * Можна і без фільтра :) Чому так краще?
+     * 1. reduce завжди обробляє весь масив до кінця, findIndex зупиниться як тільки знайде співпадіння. В більшості випадків це буде швидше
+     * 2. ми не повертаємо ВЕСЬ список юзерів якщо ОДИН був видалений, в цьому немає сенсу. Достатньо 204 No Content, це типова відповідь на таке.
+     *    Ну або 200 OK без resp body - теж нормально буде. А там консюмер нашої апішки сам рішає як поступити - рефетчити оновлений список чи ні
+     */
+    const userIndex = this.users.findIndex((user) => user.id === user_id);
+    if (!userIndex) {
       return null;
     }
 
-    this.users = users;
-
-    return this.users;
+    this.users.splice(userIndex, 1);
+    return true;
   }
 }
 
