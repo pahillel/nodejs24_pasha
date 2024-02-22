@@ -62,7 +62,7 @@ class UsersService {
 
     this.users.push(newUser);
 
-    return this.users;
+    return newUser;
   }
 
   async deleteUserById(user_id) {
