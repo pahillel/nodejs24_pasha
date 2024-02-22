@@ -1,6 +1,5 @@
 const usersService = require('./users.service');
 const { statusCodes, setError } = require('../constants');
-const { response } = require('../middlewares');
 
 const getUsers = async (req, res, next) => {
   try {
@@ -10,7 +9,8 @@ const getUsers = async (req, res, next) => {
       throw setError('Users not found', statusCodes.INTERNAL_SERVER_ERROR);
     }
 
-    response(res, statusCodes.OK, users);
+    req._apiResponse = { status: statusCodes.OK, data: users };
+    next();
   } catch (error) {
     next(error);
   }
@@ -26,7 +26,8 @@ const getUser = async (req, res, next) => {
       throw setError('User not found', statusCodes.NOT_FOUND);
     }
 
-    response(res, statusCodes.OK, user);
+    req._apiResponse = { status: statusCodes.OK, data: user };
+    next();
   } catch (error) {
     next(error);
   }
@@ -40,7 +41,8 @@ const createUser = async (req, res, next) => {
       throw setError('User not created', statusCodes.INTERNAL_SERVER_ERROR);
     }
 
-    response(res, statusCodes.CREATED, result);
+    req._apiResponse = { status: statusCodes.CREATED, data: result };
+    next();
   } catch (error) {
     next(error);
   }
@@ -54,7 +56,8 @@ const deleteUser = async (req, res, next) => {
       throw setError('User not deleted', statusCodes.NOT_FOUND);
     }
 
-    response(res, statusCodes.DELETED, result);
+    req._apiResponse = { status: statusCodes.DELETED, result };
+    next();
   } catch (error) {
     next(error);
   }
