@@ -8,6 +8,7 @@
     "start:debug": "node --inspect-brk ./main.js",
     "start:server": "node ./server.js",
     "watch:server": "cross-env LOG_LEVEL=info nodemon ./server.js",
+    "watch:server:express": "cross-env nodemon ./server-express.js",
     "watch": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info nodemon ./main.js",
     "start:copy": "cross-env COLORS_ENABLED=1 LOG_LEVEL=info node ./main.js",
     "format:fix": "prettier --write ."
@@ -20,8 +21,13 @@
     "prettier": "^3.2.4"
   },
   "dependencies": {
+    "celebrate": "^15.0.3",
     "colors": "^1.4.0",
     "config": "^3.3.10",
-    "dotenv": "^16.4.1"
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "joi": "^17.12.1",
+    "morgan": "^1.10.0",
+    "rotating-file-stream": "^3.2.1"
   }
 }
