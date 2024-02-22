@@ -14,19 +14,19 @@ class Database {
     this.dbPath = path.join(process.cwd(), 'db.json');
     this._data = { users: [] };
 
-    this.initializeDatabase();
+    this.initializeDB();
   }
 
-  async initializeDatabase() {
+  async initializeDB() {
     try {
       await fs.access(this.dbPath);
-      await this.loadUsersFromDB();
+      await this.loadDB();
     } catch (error) {
-      await this.createEmptyDBFile();
+      await this.createDB();
     }
   }
 
-  async createEmptyDBFile() {
+  async createDB() {
     try {
       await fs.writeFile(this.dbPath, JSON.stringify(this._data));
     } catch (error) {
@@ -34,7 +34,7 @@ class Database {
     }
   }
 
-  async loadUsersFromDB() {
+  async loadDB() {
     try {
       const data = await fs.readFile(this.dbPath, 'utf-8');
       this._data = JSON.parse(data);
