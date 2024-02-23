@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { validate } = require('../middlewares');
+const { validate, respond } = require('../middlewares');
 const {
   getUsers,
   getUser,

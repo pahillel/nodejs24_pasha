@@ -26,11 +26,16 @@ const validate = (
   };
 };
 
-const response = (res, statusCode, data) => {
-  res.status(statusCode).send(data);
+const respond = (req, res) => {
+  const {
+    status = statusCodes.INTERNAL_SERVER_ERROR,
+    data = 'no response from API, try again later'
+  } = req._apiResponse || {};
+
+  res.status(status).send(data);
 };
 
 module.exports = {
   validate,
-  response
+  respond
 };

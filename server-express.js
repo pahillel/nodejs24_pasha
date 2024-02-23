@@ -4,8 +4,9 @@ const config = require('config');
 const morgan = require('morgan');
 const rfs = require('rotating-file-stream');
 const express = require('express');
+
+const { database } = require('./database');
 const apiModule = require('./api');
-const userService = require('./api/users/users.service');
 
 const PORT = Number(config.get('PORT'));
 
@@ -25,12 +26,10 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// Щось таке собі, не подобається що потрібно імортити userService в цьому файлі
-// краще б зберігати одразу при обробці реквестів
 process.on('SIGINT', async () => {
   console.log('Server is shutting down');
 
-  await userService.saveUsersToDB();
+  await database.saveDB();
 
   process.exit(0);
 });
