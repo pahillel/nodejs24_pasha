@@ -2,8 +2,8 @@ const Joi = require('joi');
 
 const createUserValidation = {
   body: {
-    email: Joi.string().trim().lowercase().email().min(4).max(80).required(),
-    username: Joi.string().trim().required()
+    name: Joi.string().trim().lowercase().max(64).required(),
+    email: Joi.string().trim().lowercase().email().min(4).max(64).required()
   }
 };
 
