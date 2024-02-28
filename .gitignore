@@ -132,3 +132,5 @@ dist
 ./source
 ./target
 .DS_Store
+
+./database
