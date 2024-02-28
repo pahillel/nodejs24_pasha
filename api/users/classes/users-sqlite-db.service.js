@@ -20,13 +20,12 @@ class UsersSQLiteDBService {
   }
 
   async createNewUser(dto) {
-    // TODO: не впевненний щодо цього
     try {
       const [result] = await this._getTable().insert(dto).returning('*');
 
       return result;
     } catch (error) {
-      throw setError(error.message, statusCodes.INTERNAL_SERVER_ERROR);
+      return false;
     }
   }
 
