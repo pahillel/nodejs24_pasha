@@ -55,6 +55,14 @@ class Database {
 
 const database = new Database();
 
+process.on('SIGINT', async () => {
+  console.log('Server is shutting down');
+
+  await database.saveDB();
+
+  process.exit(0);
+});
+
 module.exports = {
   database
 };

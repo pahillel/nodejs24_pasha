@@ -1,51 +1,19 @@
-const { database } = require('../../database');
+require('dotenv').config();
+const config = require('config');
 
-class UsersService {
-  get users() {
-    return this._database.users;
+const DB = config.get('DB');
+
+const serviceFactory = (key) => {
+  switch (key) {
+    case 'json':
+      return require('./classes/users-local-db.service');
+
+    case 'sqlite':
+      return require('./classes/users-sqlite-db.service');
+
+    default:
+      break;
   }
+};
 
-  set users(users) {
-    this._database.users = users;
-  }
-
-  constructor(database) {
-    this._database = database;
-  }
-
-  async getAllUsers() {
-    return this.users;
-  }
-
-  async getUserById(user_id) {
-    const user = this.users.find((user) => user.id === user_id);
-
-    return user;
-  }
-
-  async createNewUser(dto) {
-    const newUser = {
-      ...dto,
-      id: Date.now()
-    };
-
-    this.users.push(newUser);
-
-    return newUser;
-  }
-
-  async deleteUserById(user_id) {
-    const userIndex = this.users.findIndex((user) => user.id === user_id);
-
-    if (userIndex === -1) {
-      return false;
-    }
-
-    this.users.splice(userIndex, 1);
-    return true;
-  }
-}
-
-const usersService = new UsersService(database);
-
-module.exports = usersService;
+module.exports = serviceFactory(DB);
